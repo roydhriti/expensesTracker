@@ -5,13 +5,10 @@ const KEY = "EXPENSES";
 
 export const getExpenses = async (): Promise<Expense[]> => {
   if (typeof window !== "undefined" && window.localStorage) {
-    const json = localStorage.getItem(KEY);  // works in browser
+    const json = localStorage.getItem(KEY);  // browser storage
     return json ? JSON.parse(json) : [];
   }
-  // fallback for mobile
-  const AsyncStorage = (await import("@react-native-async-storage/async-storage")).default;
-  const json = await AsyncStorage.getItem(KEY);
-  return json ? JSON.parse(json) : [];
+  return [];
 };
 
 export const saveExpenses = async (expenses: Expense[]) => {

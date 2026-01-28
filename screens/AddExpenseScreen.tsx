@@ -1,11 +1,8 @@
-import { View, TextInput, Button, Alert, Text, StyleSheet } from "react-native";
-import { useState } from "react";
-import { addExpense } from "../storage/storage";
 import { Category, Expense, } from "@/types";
-// import Picker from "@react-native-picker/picker";
-// import DateTimePicker from "@react-native-community/datetimepicker";
-import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { Picker as RNPicker } from "@react-native-picker/picker";
+import { useState } from "react";
+import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
+import { addExpense } from "../storage/storage";
 
 const Picker: any = RNPicker;
 
@@ -13,7 +10,10 @@ export default function AddExpenseScreen({ navigation }: any) {
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
   const [category, setCategory] = useState<Category>("Other");
-    const [date, setDate] = useState("");
+  const [date, setDate] = useState(() => {
+    const today = new Date();
+    return today.toISOString();
+  });
 
   const saveHandler = async () => {
     if (!title.trim()) {
@@ -72,13 +72,6 @@ export default function AddExpenseScreen({ navigation }: any) {
         </Picker>
       </View>
 
-      <Text style={styles.label}>Date</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Date (DD-MM-YYYY)"
-        value={date}
-        onChangeText={setDate}
-        />
 
      <View style={styles.button} onStartShouldSetResponder={() => true} onResponderRelease={saveHandler}>
         <Text style={styles.buttonText} >

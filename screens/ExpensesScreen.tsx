@@ -20,8 +20,13 @@ export default function ExpensesScreen({ navigation }: any) {
     return unsubscribe;
   }, []);
 
+  // const todayTotal = expenses
+  //   .filter(e => isSameDay(e.date, new Date().toISOString()))
+  //   .reduce((sum, e) => sum + e.amount, 0);
+
+  const today = new Date().toISOString();
   const todayTotal = expenses
-    .filter(e => isSameDay(e.date, new Date().toISOString()))
+    .filter(e => isSameDay(e.date, today))
     .reduce((sum, e) => sum + e.amount, 0);
 
   return (

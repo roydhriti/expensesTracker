@@ -6,12 +6,13 @@ type Props = {
 };
 
 export default function ExpenseItem({ expense }: Props) {
+  const formattedDate = new Date(expense.date).toLocaleDateString("en-GB"); 
   return (
     <View style={styles.card}>
       <View>
         <Text style={styles.title}>{expense.title}</Text>
         <Text style={styles.category}>{expense.category}</Text>
-        <Text style={styles.date}>{expense.date}</Text>
+        <Text style={styles.date}>{formattedDate}</Text>
       </View>
 
       <Text style={styles.amount}>₹ {expense.amount.toFixed(2)}</Text>
