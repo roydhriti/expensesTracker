@@ -7,12 +7,13 @@ import ExpenseItem from "@/components/ExpenseItem";
 import SummaryCard from "@/components/SummaryCard";
 
 
-export default function ExpensesScreen({ navigation }: any) {
+export default function ExpensesScreen({ navigation, route }: any) {
   const [expenses, setExpenses] = useState<Expense[]>([]);
+  const userId = route?.params?.userId;
 
   useEffect(() => {
     const load = async () => {
-      const data = await getExpenses();
+      const data = await getExpenses(userId);
       setExpenses(data);
     };
 
@@ -20,9 +21,14 @@ export default function ExpensesScreen({ navigation }: any) {
     return unsubscribe;
   }, []);
 
-  // const todayTotal = expenses
-  //   .filter(e => isSameDay(e.date, new Date().toISOString()))
-  //   .reduce((sum, e) => sum + e.amount, 0);
+  useEffect(() => {
+    if (route?.params?.userName) {
+      navigation.setOptions({
+        title: route.params.userName + "'s Expenses",
+      });
+    }
+  }, []);
+
 
   const today = new Date().toISOString();
   const todayTotal = expenses

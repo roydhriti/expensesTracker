@@ -27,7 +27,7 @@ export default function AddExpenseScreen({ navigation }: any) {
     }
 
     const expense: Expense = {
-      id: Math.random().toString(),
+      id: "",
       title: title.trim(),
       amount: Number(amount),
       category: category,

@@ -8,3 +8,11 @@ export type Expense = {
   category: Category;
   date: string;
 };
+
+
+export type User = {
+  uid: string;
+  email: string;
+  name: string;
+  role: string;
+};
