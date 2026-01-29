@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { View, Text, TextInput, Alert, StyleSheet, TouchableOpacity } from "react-native";
 import { registerUser } from "../services/authService";
+import Toast from "react-native-toast-message";
 
 export default function RegisterScreen({ navigation }: any) {
   const [email, setEmail] = useState("");
@@ -9,12 +10,30 @@ export default function RegisterScreen({ navigation }: any) {
 
 
   const handleRegister = async () => {
+
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    if (!passwordRegex.test(password)) {
+        Toast.show({
+            type: "error",
+            text1: "Invalid Password",
+            text2: "Password must be at least 6 characters and contain both letters and numbers.",
+            position: "top", 
+            visibilityTime: 3000, 
+        });
+        return;
+    }
     try {
       await registerUser(email, password, name);
       Alert.alert("Success", "User registered successfully!");
       navigation.navigate("Login");
     } catch (err: any) {
-      Alert.alert("Register Failed", err.message);
+      Toast.show({
+      type: "error",
+      text1: "Register Failed",
+      text2: err.message || "Something went wrong",
+      position: "top",
+      visibilityTime: 3000,
+    });
     }
   };
 

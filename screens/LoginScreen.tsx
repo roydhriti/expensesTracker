@@ -1,17 +1,19 @@
 import { useContext, useState } from "react";
-import { View, Text, TextInput, Alert, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TextInput, Alert, TouchableOpacity, StyleSheet, ToastAndroid, Platform } from "react-native";
 import { loginUser } from "../services/authService";
 import { AuthContext } from "@/context/AuthContext";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
+import Toast from "react-native-toast-message";
+
 
 export default function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-    const { setRole } = useContext(AuthContext);
+  const { setRole } = useContext(AuthContext);
 
-    const handleLogin = async () => {
-  try {
+  const handleLogin = async () => {
+    try {
     const userCredential = await loginUser(email, password);
     const uid = userCredential.user.uid;
 
@@ -19,17 +21,26 @@ export default function LoginScreen({ navigation }: any) {
     const docSnap = await getDoc(docRef);
 
     if (!docSnap.exists()) {
-      Alert.alert("Error", "User data not found");
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "User data not found",
+      });
       return;
     }
 
     const data = docSnap.data();
-    setRole(data.role);  
+    setRole(data.role);
   } catch (err: any) {
     console.log("Login error:", err);
-    Alert.alert("Login Failed", err.message || JSON.stringify(err));
-  }
-};
+
+    Toast.show({
+      type: "error",
+      text1: "Login Failed",
+      text2: "Credentials are wrong",
+    });
+    }
+    }
 
   return (
     <View style={styles.container}>
